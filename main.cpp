@@ -39,12 +39,14 @@ void levantar(cuenta cuentas[])
     FILE *p1;
     int i=0;
     cuenta aux;
-    if( p1 = fopen("cuentas.bic", "ab+"))
+    if( p1 = fopen("cuentas.bic", "rb+"))
     {
-        cout << "Se han levantado las cuentas exitosamente" << endl;
-        fread(&aux,sizeof(cuenta),1,p1);
-        cuentas[i]=aux;
-        i++;
+        cout << endl << "Se han levantado las cuentas exitosamente" << endl << endl;
+        while(fread(&aux,sizeof(cuenta),1,p1))
+        {
+            cuentas[i]=aux;
+            i++;
+        }
     }
     else
     {
