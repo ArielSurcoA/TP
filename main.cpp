@@ -34,10 +34,48 @@ void menu()
     cout << "ESC. Salir del programa" << endl;
 }
 
+void levantar(cuenta cuentas[])
+{
+    FILE *p1;
+    int i=0;
+    cuenta aux;
+    if( p1 = fopen("cuentas.bic", "ab+"))
+    {
+        cout << "Se han levantado las cuentas exitosamente" << endl;
+        fread(&aux,sizeof(cuenta),1,p1);
+        cuentas[i]=aux;
+        i++;
+    }
+    else
+    {
+        cout<<"El archivo no puede ser encontrado o es inexistente.";
+    }
+    fclose(p1);
+
+    return;
+}
+
+int cant_cuentas()
+{
+    FILE *p1;
+    cuenta x;
+    int i=0;
+    if(p1=fopen("cuentas.bic","rb"))
+    {
+        fread(&x,sizeof(cuenta),1,p1);
+        while(!feof(p1))
+        {
+            i++;
+            fread(&x,sizeof(cuenta),1,p1);
+        };
+    }
+    return i;
+}
+
 int main()
 {
-    //int cant;
-    //cuenta cuentas[cant+10];
+    int cant;
+    cuenta cuentas[cant+10];
     int opcion;
     do
     {
@@ -51,7 +89,7 @@ int main()
      switch(opcion)
      {
       case '1':/*Levanta las cuentas del archivo.*/
-        //levantar(cuentas,cant);
+        levantar(cuentas);
       break;
       case '2':/*cargar cuenta*/
          //cargar_cuenta(cuentas,cant);
