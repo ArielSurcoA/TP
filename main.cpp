@@ -39,12 +39,14 @@ void levantar(cuenta cuentas[])
     FILE *p1;
     int i=0;
     cuenta aux;
-    if( p1 = fopen("cuentas.bic", "ab+"))
+    if( p1 = fopen("cuentas.bic", "rb+"))
     {
-        cout << "Se han levantado las cuentas exitosamente" << endl;
-        fread(&aux,sizeof(cuenta),1,p1);
-        cuentas[i]=aux;
-        i++;
+        cout << endl << "Se han levantado las cuentas exitosamente" << endl << endl;
+        while(fread(&aux,sizeof(cuenta),1,p1))
+        {
+            cuentas[i]=aux;
+            i++;
+        }
     }
     else
     {
@@ -72,9 +74,29 @@ int cant_cuentas()
     return i;
 }
 
+void cargar_cuenta(cuenta cuentas[],int &cant)
+{
+    cuenta c;
+    cout << endl;
+    cout <<  "Ingrese el ID de la cuenta: ";
+    cin >> c.cuentaID;
+    cout << "Ingrese fecha de creacion (AAAAMMDD): ";
+    cin >> c.fechaCreacion;
+    cout << "Ingrese el saldo: ";
+    cin >> c.saldo;
+    cout << "Ingrese numero de cliente: ";
+    cin >> c.nroCliente;
+    c.activa = true;
+    cout << "********** Cuenta " << c.cuentaID << " agregada **********" << endl << endl;
+    cuentas[cant] = c;
+    cant++;
+
+    return;
+}
+
 int main()
 {
-    int cant;
+    int cant = cant_cuentas();
     cuenta cuentas[cant+10];
     int opcion;
     do
@@ -92,7 +114,7 @@ int main()
         levantar(cuentas);
       break;
       case '2':/*cargar cuenta*/
-         //cargar_cuenta(cuentas,cant);
+         cargar_cuenta(cuentas,cant);
       break;
       case '3':/*Desactivar una cuenta existente.*/
         //estado_cuenta(cuentas,cant);
