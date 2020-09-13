@@ -283,6 +283,59 @@ void lote_proceso(cuenta cuentas[], int cant)
     return;
 }
 
+void fin_jornada(cuenta cuentas[], int cant)
+{
+    FILE *f;
+    cuenta aux[cant];
+    int k = 0;
+    for(int i = 0; i < cant; i++)
+    {
+        if(cuentas[i].activa == true)
+        {
+            aux[k] = cuentas[i];
+            k++;
+        };
+    };
+    cuenta aux2[k];
+
+    for(int i = 0; i < k; i++)
+    {
+        aux2[i] = aux[i];
+    };
+
+    f = fopen("cuentas.bic","wb");
+    fwrite(aux2,sizeof(cuenta),k,f);
+    fclose(f);
+    cout << endl << "********* JORNADA FINALIZADA **********" << endl << endl;
+/*   FILE *auxiliar; ESTO NO FUNCIONANAAAAA
+
+    cuenta aux;
+    auxiliar = fopen("auxiliar.bic","ab");
+
+    for(int i = 0; i < cant; i++)
+    {
+        if(cuentas[i].activa == true)
+        {
+            fwrite(&aux, sizeof(cuenta),1,auxiliar);
+        };
+    };
+    fclose(auxiliar);
+
+    if(!remove("cuentas.bic"))
+    {
+        cout << endl << "No borrado" << endl << endl;
+    } else if(!rename("auxiliar.bic","cuentas.bic"))
+    {
+        cout << endl << endl << "No renombrado" << endl << endl;
+        cout << endl << "********** JORNADA FINALIZADA **********" << endl << endl;
+    } else
+    {
+        cout << endl << "No se pudo reescribir el archivo" << endl << endl;
+    };*/
+
+    return;
+}
+
 int main()
 {
     int cant = cant_cuentas();
@@ -318,7 +371,7 @@ int main()
         lote_proceso(cuentas, cant);
       break;
       case '7':/*Finalizar jornada.*/
-       //fin_jornada();
+       fin_jornada(cuentas, cant);
       break;
      }
     }while(opcion!=27);
