@@ -254,9 +254,12 @@ void lote_proceso(cuenta cuentas[], int cant)
             {
                 if(cuentas[i].cuentaID == tarjeta.cuentaID)//Verifica si la cuenta es la misma que la que esta asociada al movimiento
                 {
-                    cuentas[i].saldo += tarjeta.monto;
                     mov++;
+                    if(cuentas[i].activa)
+                    {
+                    cuentas[i].saldo += tarjeta.monto;
                     fwrite(&cuentas[i], sizeof(movimiento), 1, procesados); //Agrega la cuenta a procesados.bic
+                    }
                     if(mov == cantMov) //Si se procesaron todos los movimientos
                     {
                         encontrados = true; //Se terminan el
@@ -281,6 +284,11 @@ void lote_proceso(cuenta cuentas[], int cant)
     };
 
     return;
+}
+
+void fin_jornada()
+{
+
 }
 
 int main()
@@ -318,7 +326,7 @@ int main()
         lote_proceso(cuentas, cant);
       break;
       case '7':/*Finalizar jornada.*/
-       //fin_jornada();
+       fin_jornada();
       break;
      }
     }while(opcion!=27);
