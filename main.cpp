@@ -133,6 +133,7 @@ void id_search(cuenta cuentas[], int cant)
 {
     int ID,anio,mes,dia;
     bool encontrado = false;
+    bool cliente = false; //Es para saber si paso al else if del for :)
     cout << endl << "Ingrese el ID de la cuenta o el Nro de cliente de la/s cuenta/s a buscar: ";
     cin >> ID;
     cout << endl;
@@ -151,18 +152,22 @@ void id_search(cuenta cuentas[], int cant)
                 encontrado = true;
             } else if(ID == cuentas[i].nroCliente)
             {
+                cliente = true;
                 cout << cuentas[i].nroCliente << "    | " << cuentas[i].cuentaID << "  |";
                 cout << cuentas[i].saldo << "| " << dia << "/" << mes << "/" << anio << endl;
-                if(i == cant - 1)
-                {
-                    encontrado = true;
-                };
-            } else if(i == cant -1)
-            {
-                cout << "**** Por favor, ingrese un ID de cuenta o Nro de cliente valido *****" << endl;
             };
         };
     };
+
+    if(cliente)
+    {
+        encontrado = true;
+    };
+    if(!encontrado)
+    {
+        cout << "**** Por favor, ingrese un ID de cuenta o Nro de cliente valido *****" << endl << endl;
+    };
+
     cout << endl;
     return;
 }
