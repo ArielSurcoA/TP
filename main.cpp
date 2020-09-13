@@ -127,6 +127,44 @@ void estado_cuenta(cuenta cuentas[], int cant)
     return;
 }
 
+void id_search(cuenta cuentas[], int cant)
+{
+    int ID,anio,mes,dia;
+    bool encontrado = false;
+    cout << endl << "Ingrese el ID de la cuenta o el Nro de cliente de la/s cuenta/s a buscar: ";
+    cin >> ID;
+    cout << endl;
+    cout << "Cliente | Cuenta | Saldo | Fecha de creacion" << endl;
+    for(int i = 0; i < cant; i++)
+    {
+        if(!encontrado)
+        {
+            anio = cuentas[i].fechaCreacion / 10000;
+            mes = cuentas[i].fechaCreacion % 10000 / 100;
+            dia = cuentas[i].fechaCreacion % 100;
+            if(ID == cuentas[i].cuentaID)
+            {
+                cout << cuentas[i].nroCliente << "    | " << cuentas[i].cuentaID << "  |";
+                cout << cuentas[i].saldo << "| " << dia << "/" << mes << "/" << anio << endl;
+                encontrado = true;
+            } else if(ID == cuentas[i].nroCliente)
+            {
+                cout << cuentas[i].nroCliente << "    | " << cuentas[i].cuentaID << "   |";
+                cout << cuentas[i].saldo << "| " << dia << "/" << mes << "/" << anio << endl;
+                if(i == cant - 1)
+                {
+                    encontrado = true;
+                };
+            } else if(i == cant -1)
+            {
+                cout << "**** Por favor, ingrese un ID de cuenta o Nro de cliente valido *****" << endl;
+            };
+        };
+    };
+    cout << endl;
+    return;
+}
+
 int main()
 {
     int cant = cant_cuentas();
@@ -153,7 +191,7 @@ int main()
         estado_cuenta(cuentas,cant);
       break;
       case '4':/*Buscar una cuenta por id.*/
-        //id_search(cuentas,cant);
+        id_search(cuentas,cant);
       break;
       case '5':/*Listar todas las cuentas activas por saldo*/
         //active_list(cuentas,cant);
