@@ -16,7 +16,7 @@ struct cuenta
 struct movimiento
 {
     int movimientoID;
-    int fechaHora;
+    long long fechaHora;
     float monto;
     int cuentaID;
 };
@@ -71,6 +71,21 @@ int cant_cuentas()
             fread(&x,sizeof(cuenta),1,p1);
         };
     }
+    return i;
+}
+
+int cant_movimientos()
+{
+    FILE *mov;
+    movimiento x;
+    int i = 0;
+    if(mov = fopen("movimientos.bic","rb"))
+    {
+        while(fread(&x,sizeof(movimiento),1,mov))
+        {
+            i++;
+        };
+    };
     return i;
 }
 
@@ -217,6 +232,57 @@ void active_list(cuenta cuentas[], int cant)
     return;
 }
 
+void lote_proceso(cuenta cuentas[], int cant)
+{
+    FILE *lote;
+    FILE *procesados;
+
+    movimiento tarjeta; //Adquirira los datos de cada movimiento con el fread
+    bool encontrados = false;
+    int cantMov = cant_movimientos(); //Cantidad de saldos que debe actualizar
+    int mov = 0; //Cantidad de saldos actualizados
+
+    lote = fopen("movimientos.bic","rb");
+    procesados = fopen("procesados.bic","ab");
+
+    if(lote != NULL && procesados != NULL)
+    {
+        cout << endl;
+        while(!encontrados & fread(&tarjeta, sizeof(movimiento),1,lote))
+        {
+            for(int i = 0; i < cant; i++) //Recorre todo el array de cuentas
+            {
+                if(cuentas[i].cuentaID == tarjeta.cuentaID)//Verifica si la cuenta es la misma que la que esta asociada al movimiento
+                {
+                    cuentas[i].saldo += tarjeta.monto;
+                    mov++;
+                    fwrite(&cuentas[i], sizeof(movimiento), 1, procesados); //Agrega la cuenta a procesados.bic
+                    if(mov == cantMov) //Si se procesaron todos los movimientos
+                    {
+                        encontrados = true; //Se terminan el
+                        i = cant;           //while y el for
+                    };
+                };
+            };
+        };
+    } else
+    {
+        cout << endl << "Ha ocurrido un error procesando el lote de movimientos" << endl << endl;;
+    };
+    fclose(lote);
+    fclose(procesados);
+
+    if(encontrados) //Si todos los movimientos encontraron su cuenta asociada
+    {
+        cout << "***** Procesamiento del lote exitoso *****" << endl << endl;
+    } else
+    {
+        cout << "Se encontraron movimientos de cuentas inexistentes" << endl << endl;
+    };
+
+    return;
+}
+
 int main()
 {
     int cant = cant_cuentas();
@@ -249,7 +315,7 @@ int main()
         active_list(cuentas,cant);
       break;
       case '6':/*Procesar lote de moviemientos*/
-        //lote_proceso();
+        lote_proceso(cuentas, cant);
       break;
       case '7':/*Finalizar jornada.*/
        //fin_jornada();
