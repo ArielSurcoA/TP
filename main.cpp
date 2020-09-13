@@ -155,7 +155,7 @@ void id_search(cuenta cuentas[], int cant)
             } else if(ID == cuentas[i].nroCliente)
             {
                 cliente = true;
-                cout << cuentas[i].nroCliente << "    | " << cuentas[i].cuentaID << "   |";
+                cout << cuentas[i].nroCliente << "    | " << cuentas[i].cuentaID << "  |";
                 cout << cuentas[i].saldo << "| " << dia << "/" << mes << "/" << anio << endl;
             };
         };
