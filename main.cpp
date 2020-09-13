@@ -114,6 +114,7 @@ void estado_cuenta(cuenta cuentas[], int cant)
     cuenta tarjeta;
     int ID;
     bool encontrado = false;
+    bool cliente = false; //Es para saber si paso al else if del for :)
     cout << endl << "Ingrese el ID de la cuenta o el Nro de cliente: ";
     cin >> ID;
     cout << endl;
@@ -128,14 +129,15 @@ void estado_cuenta(cuenta cuentas[], int cant)
         } else if(!encontrado && ID == cuentas[i].nroCliente)
         {
             cuentas[i].activa = false;
-            if(i == cant - 1)
-            {
-                encontrado = true;
-                cout << "***** Se han desactivado todas las cuentas del cliente " << cuentas[i].nroCliente << " *****" << endl << endl;
-            };
-        };
+            cliente = true;
+            cout << "***** Se han desactivado todas las cuentas del cliente " << cuentas[i].nroCliente << " *****" << endl << endl;
+        }
     };
 
+    if(cliente)
+    {
+        encontrado = true;
+    };
     if(!encontrado)
     {
         cout << "**** Por favor, ingrese un ID de cuenta o Nro de cliente valido *****" << endl << endl;
