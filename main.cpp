@@ -118,10 +118,12 @@ void estado_cuenta(cuenta cuentas[], int cant)
                 encontrado = true;
                 cout << "***** Se han desactivado todas las cuentas del cliente " << cuentas[i].nroCliente << " *****" << endl << endl;
             };
-        } else if(i == cant - 1)
-        {
-            cout << "**** Por favor, ingrese un ID de cuenta o Nro de cliente valido *****" << endl << endl;
         };
+    };
+
+    if(!encontrado)
+    {
+        cout << "**** Por favor, ingrese un ID de cuenta o Nro de cliente valido *****" << endl << endl;
     };
 
     return;
@@ -149,7 +151,7 @@ void id_search(cuenta cuentas[], int cant)
                 encontrado = true;
             } else if(ID == cuentas[i].nroCliente)
             {
-                cout << cuentas[i].nroCliente << "    | " << cuentas[i].cuentaID << "   |";
+                cout << cuentas[i].nroCliente << "    | " << cuentas[i].cuentaID << "  |";
                 cout << cuentas[i].saldo << "| " << dia << "/" << mes << "/" << anio << endl;
                 if(i == cant - 1)
                 {
@@ -162,6 +164,51 @@ void id_search(cuenta cuentas[], int cant)
         };
     };
     cout << endl;
+    return;
+}
+
+void active_list(cuenta cuentas[], int cant)
+{
+    cuenta aux;
+    cuenta aux2[cant];
+    int k = 0;
+
+    for(int h = 0; h < cant; h++)
+    {
+        if(cuentas[h].activa==true)
+        {
+            aux2[k]=cuentas[h];
+            k++;
+        };
+    };
+
+    for(int i = 0; i < cant; i++)
+    {
+        for(int j = 0; j < cant; j++)
+        {
+            if(aux2[j].saldo < aux2[j+1].saldo)
+            {
+                aux = aux2[j+1];
+                aux2[j+1] = aux2[j];
+                aux2[j] = aux;
+            };
+        };
+    };
+
+    int anio,mes,dia;
+    cout << endl << "Cliente | Cuenta | Saldo | Fecha de creacion" << endl;
+
+    for(int i = 0; i < k; i++)
+    {
+        anio = aux2[i].fechaCreacion / 10000;
+        mes = aux2[i].fechaCreacion % 10000 / 100;
+        dia = aux2[i].fechaCreacion % 100;
+
+        cout << " " << aux2[i].nroCliente << "   | " << aux2[i].cuentaID << "  |";
+        cout << aux2[i].saldo << "| " << dia << "/" << mes << "/" << anio << endl;
+    };
+    cout << endl;
+
     return;
 }
 
@@ -194,7 +241,7 @@ int main()
         id_search(cuentas,cant);
       break;
       case '5':/*Listar todas las cuentas activas por saldo*/
-        //active_list(cuentas,cant);
+        active_list(cuentas,cant);
       break;
       case '6':/*Procesar lote de moviemientos*/
         //lote_proceso();
