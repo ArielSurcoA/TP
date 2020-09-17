@@ -57,7 +57,7 @@ void levantar(cuenta cuentas[])
     return;
 }
 
-int cant_cuentas()
+int cant_cuentas() //Devuelve la cantidad de cuentas que tiene cargado el archivo cuentas.bic
 {
     FILE *p1;
     cuenta x;
@@ -74,7 +74,7 @@ int cant_cuentas()
     return i;
 }
 
-int cant_movimientos()
+int cant_movimientos() //Devuelve la cantidad de movimientos que tiene cargado el archivo movimientos.bic
 {
     FILE *mov;
     movimiento x;
@@ -150,7 +150,6 @@ void id_search(cuenta cuentas[], int cant)
 {
     int ID,anio,mes,dia;
     bool encontrado = false;
-    bool cliente = false; //Es para saber si paso al else if del for :)
     cout << endl << "Ingrese el ID de la cuenta o el Nro de cliente de la/s cuenta/s a buscar: ";
     cin >> ID;
     cout << endl;
@@ -162,29 +161,18 @@ void id_search(cuenta cuentas[], int cant)
             anio = cuentas[i].fechaCreacion / 10000;
             mes = cuentas[i].fechaCreacion % 10000 / 100;
             dia = cuentas[i].fechaCreacion % 100;
-            if(ID == cuentas[i].cuentaID)
+            if(ID == cuentas[i].cuentaID || ID == cuentas[i].nroCliente)
             {
                 cout << cuentas[i].nroCliente << "    | " << cuentas[i].cuentaID << "  |";
                 cout << cuentas[i].saldo << "| " << dia << "/" << mes << "/" << anio << endl;
                 encontrado = true;
-            } else if(ID == cuentas[i].nroCliente)
-            {
-                cliente = true;
-                cout << cuentas[i].nroCliente << "    | " << cuentas[i].cuentaID << "  |";
-                cout << cuentas[i].saldo << "| " << dia << "/" << mes << "/" << anio << endl;
-            };
-        };
-    };
-
-    if(cliente)
-    {
-        encontrado = true;
-    };
+            }
+        }
+    }
     if(!encontrado)
     {
-        cout << "**** Por favor, ingrese un ID de cuenta o Nro de cliente valido *****" << endl << endl;
-    };
-
+        cout << "** Por favor, ingrese un ID de cuenta o Nro de cliente valido ***" << endl << endl;
+    }
     cout << endl;
     return;
 }
@@ -309,31 +297,6 @@ void fin_jornada(cuenta cuentas[], int cant)
     fwrite(aux2,sizeof(cuenta),k,f);
     fclose(f);
     cout << endl << "********* JORNADA FINALIZADA **********" << endl << endl;
-/*   FILE *auxiliar; ESTO NO FUNCIONANAAAAA
-
-    cuenta aux;
-    auxiliar = fopen("auxiliar.bic","ab");
-
-    for(int i = 0; i < cant; i++)
-    {
-        if(cuentas[i].activa == true)
-        {
-            fwrite(&aux, sizeof(cuenta),1,auxiliar);
-        };
-    };
-    fclose(auxiliar);
-
-    if(!remove("cuentas.bic"))
-    {
-        cout << endl << "No borrado" << endl << endl;
-    } else if(!rename("auxiliar.bic","cuentas.bic"))
-    {
-        cout << endl << endl << "No renombrado" << endl << endl;
-        cout << endl << "********** JORNADA FINALIZADA **********" << endl << endl;
-    } else
-    {
-        cout << endl << "No se pudo reescribir el archivo" << endl << endl;
-    };*/
 
     return;
 }
